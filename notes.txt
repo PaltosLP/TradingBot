@@ -1,0 +1,4 @@
+
+
+Stop the Programm:
+	- <Ctrl> + <c>
