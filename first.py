@@ -6,8 +6,8 @@ from time import sleep, time
 from binance.exceptions import BinanceAPIException
 from termcolor import colored
 
-apiKey = "UfI35WaTUybx3M9dYzIzQqZLgMMJjgRZtHN6MtyxQ03SQQT0DAYC8h5xYSpPnuaz"
-apiSecurity = "jJ3A9mVMhaC5PQdLOCBIOVouHc0PLlgxVVEaCTnDMb8xOeXKYIoiwK4CNZ6YI4U0"
+apiKey = "-"
+apiSecurity = "-"
 
 
 client = Client(apiKey, apiSecurity)
