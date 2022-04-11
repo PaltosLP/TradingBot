@@ -1,0 +1,3 @@
+
+apiKey = 'abc'
+apiSecurity = 'def'
