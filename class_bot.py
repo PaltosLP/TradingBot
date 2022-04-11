@@ -92,5 +92,13 @@ class Bot:
             sell_sig = True
             return sell_sig
 
+    def exe_func(self):
+        while True:
+            print(colored(self.acc_data(), 'green'))
+            self.trading_strat()
 
+
+macd_bot = Bot('ADAUSDT', 20, '3m', 'macd')
+
+macd_bot.exe_func()
 
