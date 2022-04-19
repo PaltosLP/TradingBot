@@ -106,7 +106,7 @@ class Bot:
 
     def exe_func(self):
         while True:
-            print(colored(self.acc_data(self.buying_asset), 'green'))
+            print(colored(self.acc_data(self.stable_asset), 'green'))
             self.trading_strat()
 
 
