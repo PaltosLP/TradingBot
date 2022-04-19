@@ -43,4 +43,28 @@ def exe(symbol):
     return buying_asset, selling_asset
 
 
-print(exe('ADAUSDT'))
+
+def place_order(side,symbol):
+    buying_asset = symbol[0:3]
+    stable_asset = symbol[3:len(symbol)+1]
+    if side == 'BUY':
+         unrounded_qty = acc_data(stable_asset)
+         unrounded_qty = float(unrounded_qty)
+         qty = round(unrounded_qty, 0)
+         print(qty, type(qty))
+ 
+    else:
+         unrounded_qty = acc_data(buying_asset)
+         unrounded_qty = float(unrounded_qty)
+         qty = round(unrounded_qty, 0)
+
+    order = client.create_order(
+          symbol = symbol,
+          side = side,
+          type = 'MARKET',
+           quantity = qty,
+       )
+    return order
+
+
+print(place_order('BUY', 'ADAUSDT'))

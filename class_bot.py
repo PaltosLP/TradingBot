@@ -39,10 +39,12 @@ class Bot:
     def place_order(self, side):
         if side == 'BUY':
             unrounded_qty = self.acc_data(self.buying_asset)
+            unrounded_qty = float(unrounded_qty)
             qty = round(unrounded_qty, 0)
 
         else:
             unrounded_qty = self.acc_data(self.stable_asset)
+            unrounded_qty = float(unrounded_qty)
             qty = round(unrounded_qty, 0)
 
         order = client.create_order(
