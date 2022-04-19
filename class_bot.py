@@ -12,11 +12,18 @@ print('logged in')
 
 class Bot:
     
-    def __init__(self, symbol, qty, time_interval, strategy):
-        self.symbol = symbol
-        self.qty = qty
+    def __init__(self, symbol, time_interval, strategy):
+        self.symbol = symbol 
         self.time_interval = time_interval
         self.strategy = strategy
+        self.buying_asset = symbol[0:3]
+        self.stable_asset = symbol[3:len(symbol)+1]
+
+    def acc_data(self, asset):
+            balance = dict()
+            balance = client.get_asset_balance(asset = asset)
+            return balance["free"]
+
 
 
     def get_min_data(self): 
@@ -30,13 +37,23 @@ class Bot:
         return df
 
     def place_order(self, side):
+        if side == 'BUY':
+            unrounded_qty = self.acc_data(self.buying_asset)
+            qty = round(unrounded_qty, 0)
+
+        else:
+            unrounded_qty = self.acc_data(self.stable_asset)
+            qty = round(unrounded_qty, 0)
+
         order = client.create_order(
             symbol = self.symbol,
             side = side,
             type = 'MARKET',
-            quantity = self.qty,
+            quantity = qty,
         )
         return order
+
+
 
     def trading_strat(self, open_pos = False):
         while True:
@@ -63,21 +80,16 @@ class Bot:
                     break
                 sleep(45 * int(self.time_interval[0]))
 
-    def acc_data(self):
-        info = client.get_account()
-        balance = info['balances'][11]['free']
-        return balance
+    #def curr_price(self):
+        #avg_price = client.get_avg_price(symbol=self.symbol)
+        #return avg_price['price']
 
-    def curr_price(self):
-        avg_price = client.get_avg_price(symbol=self.symbol)
-        return avg_price['price']
-
-    def qty_calc(self):
-        balance = self.acc_data()
-        price = self.curr_price()
-        amount = (float(balance)-3) / float(price)
-        amount = round(amount, 0)
-        return amount
+    #def qty_calc(self, asset):
+        #balance = self.acc_data(asset)
+        #price = self.curr_price()
+        #amount = (float(balance)-3) / float(price)
+        #amount = round(amount, 0)
+        #return amount
         
     def check_macd_open(self, df):
         buy_sig = False
@@ -94,11 +106,11 @@ class Bot:
 
     def exe_func(self):
         while True:
-            print(colored(self.acc_data(), 'green'))
+            print(colored(self.acc_data(self.buying_asset), 'green'))
             self.trading_strat()
 
 
-macd_bot = Bot('ADAUSDT', 20, '3m', 'macd')
+macd_bot = Bot('ADAUSDT','3m', 'macd')
 
 macd_bot.exe_func()
 
