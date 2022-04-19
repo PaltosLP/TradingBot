@@ -66,5 +66,5 @@ def place_order(side,symbol):
        )
     return order
 
-
-print(place_order('BUY', 'ADAUSDT'))
+profit = 1.5
+print(colored(profit, 'yellow'))

@@ -38,12 +38,12 @@ class Bot:
 
     def place_order(self, side):
         if side == 'BUY':
-            unrounded_qty = self.acc_data(self.buying_asset)
+            unrounded_qty = self.acc_data(self.stable_asset)
             unrounded_qty = float(unrounded_qty)
             qty = round(unrounded_qty, 0)
 
         else:
-            unrounded_qty = self.acc_data(self.stable_asset)
+            unrounded_qty = self.acc_data(self.buying_asset)
             unrounded_qty = float(unrounded_qty)
             qty = round(unrounded_qty, 0)
 
@@ -77,7 +77,7 @@ class Bot:
                     sellprice = float(order['fills'][0]['price'])
                     print('sold at', sellprice)
                     profit = sellprice - buyprice
-                    print(profit)
+                    print(colored(profit, 'yellow'))
                     open_pos = False
                     break
                 sleep(45 * int(self.time_interval[0]))
