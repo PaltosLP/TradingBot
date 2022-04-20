@@ -39,13 +39,13 @@ class Bot:
     def place_order(self, side):
         if side == 'BUY':
             unrounded_qty = self.acc_data(self.stable_asset)
-            unrounded_qty = float(unrounded_qty)
-            qty = round(unrounded_qty, 0)
+            unrounded_qty = float(unrounded_qty) - 0.01 * float(unrounded_qty)
+            qty = int(round(unrounded_qty, 0))
 
         else:
             unrounded_qty = self.acc_data(self.buying_asset)
-            unrounded_qty = float(unrounded_qty)
-            qty = round(unrounded_qty, 0)
+            unrounded_qty = float(unrounded_qty)  - 0.01 * float(unrounded_qty)
+            qty = int(round(unrounded_qty, 0))
 
         order = client.create_order(
             symbol = self.symbol,
@@ -68,7 +68,7 @@ class Bot:
                     print('bought at', buyprice)
                     sleep(60 * int(self.time_interval[0]))
                     break
-                sleep(45 * int(self.time_interval[0]))
+                sleep(15 * int(self.time_interval[0]))
         if open_pos:
             while True:
                 df = self.get_min_data()
@@ -80,7 +80,7 @@ class Bot:
                     print(colored(profit, 'yellow'))
                     open_pos = False
                     break
-                sleep(45 * int(self.time_interval[0]))
+                sleep(15 * int(self.time_interval[0]))
 
     #def curr_price(self):
         #avg_price = client.get_avg_price(symbol=self.symbol)
