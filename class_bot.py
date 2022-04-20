@@ -12,10 +12,11 @@ print('logged in')
 
 class Bot:
     
-    def __init__(self, symbol, time_interval, strategy):
+    def __init__(self, symbol, time_interval, strategy, sleep_time):
         self.symbol = symbol 
         self.time_interval = time_interval
         self.strategy = strategy
+        self.sleep_time = sleep_time
         self.buying_asset = symbol[0:3]
         self.stable_asset = symbol[3:len(symbol)+1]
 
@@ -66,7 +67,7 @@ class Bot:
                     open_pos = True
                     buyprice = float(order['fills'][0]['price'])
                     print('bought at', buyprice)
-                    sleep(60 * int(self.time_interval[0]))
+                    sleep(self.sleep_time)
                     break
                 sleep(15 * int(self.time_interval[0]))
         if open_pos:
@@ -80,7 +81,7 @@ class Bot:
                     print(colored(profit, 'yellow'))
                     open_pos = False
                     break
-                sleep(15 * int(self.time_interval[0]))
+                sleep(self.sleep_time)
 
     #def curr_price(self):
         #avg_price = client.get_avg_price(symbol=self.symbol)
@@ -112,7 +113,7 @@ class Bot:
             self.trading_strat()
 
 
-macd_bot = Bot('ADAUSDT','3m', 'macd')
+macd_bot = Bot('ADAUSDT','15m', 'macd', 5)
 
 macd_bot.exe_func()
 
