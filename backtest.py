@@ -7,8 +7,13 @@ class MyStrategy(bt.Strategy):
 #Instantiate Cerebro engine
 cerebro = bt.Cerebro()
 
+cerebro.broker.set_cash(50)
+
+print('Starting at %.2f' % cerebro.broker.getvalue())
 #Add strategy to Cerebro
-cerebro.addstrategy(MyStrategy)
+# cerebro.addstrategy(MyStrategy)
 
 #Run Cerebro Engine
 cerebro.run()
+
+print('Result Value: %.2f' % cerebro.broker.getvalue())

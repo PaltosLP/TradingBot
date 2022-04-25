@@ -28,8 +28,9 @@ class Bot:
 
 
     def get_min_data(self): 
-        utc_time = str(int(self.time_interval[0]) * 60) + 'm UTC'
-        df = pd.DataFrame(client.get_historical_klines(self.symbol, self.time_interval, utc_time))
+        utc_time = str(int(self.time_interval) * 60) + 'm UTC'
+        interval = str(self.time_interval) + 'm'
+        df = pd.DataFrame(client.get_historical_klines(self.symbol, interval, utc_time))
         df = df.iloc[:,:6]
         df.columns = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume']
         df = df.set_index('Time')
@@ -69,7 +70,7 @@ class Bot:
                     print('bought at', buyprice)
                     sleep(self.sleep_time)
                     break
-                sleep(15 * int(self.time_interval[0]))
+                sleep(self.sleep_time)
         if open_pos:
             while True:
                 df = self.get_min_data()
@@ -113,7 +114,6 @@ class Bot:
             self.trading_strat()
 
 
-macd_bot = Bot('ADAUSDT','15m', 'macd', 5)
+macd_bot = Bot('ADAUSDT',15, 'macd', 1)
 
-macd_bot.exe_func()
-
+print(macd_bot.get_min_data())
