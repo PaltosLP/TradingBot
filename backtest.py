@@ -2,6 +2,7 @@ import backtrader as bt
 from strats import TestStrategy
 
 
+
 class MyStrategy(bt.Strategy):
     def next(self):
         pass #Do something
@@ -18,7 +19,7 @@ data = bt.feeds.YahooFinanceCSVData(
 
 
 cerebro.adddata(data)
-
+cerebro.broker.setcommission(commission=0.001)
 cerebro.addstrategy(TestStrategy)
 
 #Run Cerebro Engine

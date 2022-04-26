@@ -97,6 +97,8 @@ class Bot:
         
     def check_macd_open(self, df):
         buy_sig = False
+        print(ta.trend.macd_diff(df.Close))
+        print(ta.trend.macd_diff(df.Close).iloc[-1])
         if ta.trend.macd_diff(df.Close).iloc[-1] > 0 \
         and ta.trend.macd_diff(df.Close).iloc[-2] < 0:
             buy_sig = True
@@ -116,4 +118,7 @@ class Bot:
 
 macd_bot = Bot('ADAUSDT',15, 'macd', 1)
 
-print(macd_bot.get_min_data())
+dataf = macd_bot.get_min_data()
+
+print(dataf)
+print(macd_bot.check_macd_open(dataf))
