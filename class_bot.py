@@ -30,7 +30,15 @@ class Bot:
     def get_min_data(self): 
         utc_time = str(int(self.time_interval) * 60) + 'm UTC'
         interval = str(self.time_interval) + 'm'
-        df = pd.DataFrame(client.get_historical_klines(self.symbol, interval, utc_time))
+        time_err = True
+        while time_err == True:
+            try:
+                df = pd.DataFrame(client.get_historical_klines(self.symbol, interval, utc_time))
+                time_err = False
+            except:
+                print('something wrong with Timeout')
+                sleep(self.sleep_time) 
+
         df = df.iloc[:,:6]
         df.columns = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume']
         df = df.set_index('Time')
@@ -49,12 +57,19 @@ class Bot:
             unrounded_qty = float(unrounded_qty)  - 0.01 * float(unrounded_qty)
             qty = int(round(unrounded_qty, 0))
 
-        order = client.create_order(
-            symbol = self.symbol,
-            side = side,
-            type = 'MARKET',
-            quantity = qty,
-        )
+        qty_err = True
+        while qty_err = True:
+            try:
+                order = client.create_order(
+                    symbol = self.symbol,
+                    side = side,
+                    type = 'MARKET',
+                    quantity = qty,
+                )
+                qty_err = False
+            except:
+                print('something wrong with qty')
+                sleep(self.sleep_time)
         return order
 
 
@@ -97,8 +112,8 @@ class Bot:
         
     def check_macd_open(self, df):
         buy_sig = False
-        print(ta.trend.macd_diff(df.Close))
-        print(ta.trend.macd_diff(df.Close).iloc[-1])
+        # print(ta.trend.macd_diff(df.Close))
+        # print(ta.trend.macd_diff(df.Close).iloc[-1])
         if ta.trend.macd_diff(df.Close).iloc[-1] > 0 \
         and ta.trend.macd_diff(df.Close).iloc[-2] < 0:
             buy_sig = True
@@ -110,15 +125,12 @@ class Bot:
             sell_sig = True
             return sell_sig
 
-    def exe_func(self):
+    def start(self):
         while True:
             print(colored(self.acc_data(self.stable_asset), 'green'))
             self.trading_strat()
 
 
-macd_bot = Bot('ADAUSDT',15, 'macd', 1)
+macd_bot = Bot('ADAUSDT',15, 'macd', 60)
 
-dataf = macd_bot.get_min_data()
-
-print(dataf)
-print(macd_bot.check_macd_open(dataf))
+macd_bot.start()
