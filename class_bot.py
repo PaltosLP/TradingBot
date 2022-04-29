@@ -58,7 +58,7 @@ class Bot:
             qty = int(round(unrounded_qty, 0))
 
         qty_err = True
-        while qty_err = True:
+        while qty_err == True:
             try:
                 order = client.create_order(
                     symbol = self.symbol,
