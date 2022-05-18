@@ -1,2 +1,8 @@
-import binance
-print(binance.__file__)
+
+
+
+
+
+
+
+balance = result[1]['balance']
