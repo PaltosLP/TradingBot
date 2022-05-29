@@ -120,7 +120,7 @@ class Bot:
 
     def check_rsi_close(self, df):
         sell_sig = False
-        if ta.momentum.rsi(df.Close).iloc[-1] > 61:
+        if ta.momentum.rsi(df.Close).iloc[-1] > 60:
             sell_sig = True
             return sell_sig
 
@@ -133,3 +133,5 @@ class Bot:
 rsi_bot = Bot('ADAUSDT',15, 'rsi', 60)
 
 rsi_bot.start()
+
+
