@@ -13,7 +13,7 @@ print('logged in')
 class Bot:
     buying = 3
     selling = 0
-    def __init__(self, time_interval, strategy, sleep_time, buying_asset, stable_asset, amount):
+    def __init__(self, time_interval, strategy, sleep_time, buying_asset, stable_asset): #amount 
         self.symbol = buying_asset + stable_asset
         self.time_interval = time_interval
         self.strategy = strategy
@@ -25,7 +25,7 @@ class Bot:
     def acc_data(self, asset):
             balance = dict()
             balance = client.get_asset_balance(asset = asset)
-            return balance["free"]
+            return balance["free"] - 10
 
 
 
@@ -90,23 +90,23 @@ class Bot:
         while True:
             df = self.get_min_data()
             if not open_pos:
-                if self.check_macd_open(df):
+                if self.check('BUY', df):
                     order = self.place_order('BUY')
                     open_pos = True
                     buyprice = float(order['fills'][0]['price'])
-                    print('bought at', buyprice)
+                    print(f'{self.strategy} bought at', buyprice)
                     sleep(self.sleep_time)
                     break
                 sleep(self.sleep_time)
         if open_pos:
             while True:
                 df = self.get_min_data()
-                if self.check_macd_close(df):
+                if self.check('SELL',df):
                     order = self.place_order('SELL')    #qty-(0.01*qty)
                     sellprice = float(order['fills'][0]['price'])
-                    print('sold at', sellprice)
+                    print(f'{self.strategy} sold at {sellprice}')
                     profit = sellprice - buyprice
-                    print(colored(profit, 'yellow'))
+                    print(f'{self.strategy} did {profit} amount of profit')
                     open_pos = False
                     break
                 sleep(self.sleep_time)
@@ -190,12 +190,14 @@ class Bot:
             self.trading_strat()
 
 
-macd_bot = Bot(15, 'macd', 60, 'ADA', 'USDT', 20)
-#sleep(60)
-#rsi_bot = Bot(15, 'rsi', 60, 'ADA', 'USDT', x)
-#sleep(60)
-#stoch_bot = Bot(15, 'stoch', 60, 'ADA', 'USDT', x)
-
-
+macd_bot = Bot(15, 'macd', 60, 'ADA', 'USDT')
+rsi_bot = Bot(15, 'rsi', 60, 'ADA', 'USDT')
+stoch_bot = Bot(15, 'stoch', 60, 'ADA', 'USDT')
 
 macd_bot.start()
+sleep(60)
+rsi_bot.start()
+sleep(60)
+stoch_bot.start()
+
+
