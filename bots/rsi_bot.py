@@ -48,14 +48,16 @@ class Bot:
 
     def place_order(self, side):
         if side == 'BUY':
+            buying = self.file_get('BUY')
             unrounded_qty = self.acc_data(self.stable_asset)
-            unrounded_qty = float(unrounded_qty) - 0.01 * float(unrounded_qty)
-            qty = int(round(unrounded_qty, 0))
+            unrounded_qty = float(unrounded_qty) - 0.01 * float(unrounded_qty) -10
+            qty = int(round(unrounded_qty, 0)) / buying
 
         else:
+            selling = self.file_get('SELL')
             unrounded_qty = self.acc_data(self.buying_asset)
             unrounded_qty = float(unrounded_qty)  - 0.01 * float(unrounded_qty)
-            qty = int(round(unrounded_qty, 0))
+            qty = int(round(unrounded_qty, 0)) / selling
 
         qty_err = True
         while qty_err == True:
@@ -70,9 +72,40 @@ class Bot:
             except:
                 print('something wrong with qty')
                 sleep(self.sleep_time)
+
+        if side == 'BUY':
+            self.file_change('BUY')
+        else:
+            self.file_change('SELL')
+
         return order
 
 
+    def file_get(self, side):
+        f = open("info.txt")
+        lines = f.readlines()
+        buying = int(list(lines[1])[0])
+        selling = int(list(lines[4])[0])
+        f.close()
+        if side == 'BUY':
+            return buying
+        else:
+            return selling
+
+    def file_change(self, side):
+        buying = self.file_get('BUY')
+        selling = self.file_get('SELL')
+
+        if side == 'BUY':
+            buying -= 1
+            selling += 1
+        else:
+            buying += 1
+            selling -= 1
+
+        f = open("info.txt", 'w')
+        f.write(f"Buying:\n{buying}\n\nSelling:\n{selling}")
+        f.close()
 
     def trading_strat(self, open_pos = False):
         while True:

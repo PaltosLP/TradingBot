@@ -20,12 +20,12 @@ class Bot:
         self.sleep_time = sleep_time
         self.buying_asset = buying_asset
         self.stable_asset = stable_asset
-        self.amount = amount
+        # self.amount = amount
 
     def acc_data(self, asset):
             balance = dict()
             balance = client.get_asset_balance(asset = asset)
-            return balance["free"] - 10
+            return float(balance["free"]) 
 
 
 
