@@ -186,6 +186,7 @@ class Bot:
 
     def start(self):
         while True:
+            print(f'{self.strategy} here')
             print(colored(self.acc_data(self.stable_asset), 'green'))
             self.trading_strat()
 
