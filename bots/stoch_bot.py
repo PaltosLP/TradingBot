@@ -171,5 +171,6 @@ class Bot:
             self.trading_strat()
 
 
-macd_bot = Bot('ADAUSDT',15, 'stoch', 60)
+stoch_bot = Bot('ADAUSDT',15, 'stoch', 60)
 
+stoch_bot.start()
