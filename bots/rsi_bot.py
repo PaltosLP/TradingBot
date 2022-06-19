@@ -50,7 +50,7 @@ class Bot:
         if side == 'BUY':
             buying = self.file_get('BUY')
             unrounded_qty = self.acc_data(self.stable_asset)
-            unrounded_qty = float(unrounded_qty) - 0.01 * float(unrounded_qty) -10
+            unrounded_qty = float(unrounded_qty) - 0.01 * float(unrounded_qty)
             qty = int(round(unrounded_qty, 0)) / buying
 
         else:

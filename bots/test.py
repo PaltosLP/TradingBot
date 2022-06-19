@@ -1,23 +1,55 @@
+from binance.client import Client
+import pandas as pd 
+import ta 
+from time import sleep
+from termcolor import colored
+import config
 
 
-# f = open("info.txt")
-#
-# # print(f.read())
-#
-# print("-----------------------------------------")
-#
-# lines = f.readlines()
-#
-# l = list(x[1])
-#
-# y = int(l[0])
-#
-# print(y, type(y))
-#
-# f.close()
+client = Client(config.apiKey, config.apiSecurity)
+print('logged in')
+
+def place_order(side):
+    if side == 'BUY':
+        buying = file_get('BUY')
+        unrounded_qty = acc_data('USDT')
+        unrounded_qty = float(unrounded_qty) - 0.01 * float(unrounded_qty)
+        qty = int(round(unrounded_qty, 0)) / buying
+
+    else:
+        selling = file_get('SELL')
+        unrounded_qty = acc_data('ADA')
+        unrounded_qty = float(unrounded_qty)  - 0.01 * float(unrounded_qty)
+        qty = int(round(unrounded_qty, 0)) / selling
+
+    # qty_err = True
+    # while qty_err == True:
+    #     try:
+    #         order = client.create_order(
+    #             symbol = self.symbol,
+    #             side = side,
+    #             type = 'MARKET',
+    #             quantity = qty,
+    #         )
+    #         qty_err = False
+    #     except:
+    #         print('something wrong with qty')
+    #         sleep(self.sleep_time)
+    #
 
 
-def file_get(self, side):
+
+
+    if side == 'BUY':
+        file_change('BUY')
+    else:
+        file_change('SELL')
+
+    # return order
+    return qty
+
+
+def file_get(side):
     f = open("info.txt")
     lines = f.readlines()
     buying = int(list(lines[1])[0])
@@ -28,9 +60,9 @@ def file_get(self, side):
     else:
         return selling
 
-def file_change(self, side):
-    buying = file_get(self, 'BUY')
-    selling = file_get(self, 'SELL')
+def file_change(side):
+    buying = file_get('BUY')
+    selling = file_get('SELL')
 
     if side == 'BUY':
         buying -= 1
@@ -44,4 +76,13 @@ def file_change(self, side):
     f.close()
 
 
-file_change(1, 'SELL')
+def acc_data(asset):
+        balance = dict()
+        balance = client.get_asset_balance(asset = asset)
+        return balance["free"]
+
+
+
+print(place_order('BUY'))
+
+
