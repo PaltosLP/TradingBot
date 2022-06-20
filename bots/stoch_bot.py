@@ -3,6 +3,7 @@ import pandas as pd
 import ta 
 from time import sleep
 from termcolor import colored
+from datetime import datetime
 import config
 
 
@@ -71,6 +72,8 @@ class Bot:
                 qty_err = False
             except:
                 print('something wrong with qty')
+                sleep(300)
+                client = Client(config.apiKey, config.apiSecurity)
                 sleep(self.sleep_time)
 
         if side == 'BUY':
@@ -116,6 +119,7 @@ class Bot:
                     open_pos = True
                     buyprice = float(order['fills'][0]['price'])
                     print('bought at', buyprice)
+                    self.file_log('BUY', buyprice)
                     sleep(self.sleep_time)
                     break
                 sleep(self.sleep_time)
@@ -125,6 +129,7 @@ class Bot:
                 if self.check_stoch_close(df):
                     order = self.place_order('SELL')    #qty-(0.01*qty)
                     sellprice = float(order['fills'][0]['price'])
+                    self.file_log('SELL', sellprice)
                     print('sold at', sellprice)
                     profit = sellprice - buyprice
                     print(colored(profit, 'yellow'))
@@ -164,6 +169,14 @@ class Bot:
             if stoch == stoch_sig:
                 sell_sig = True
                 return sell_sig
+
+    def file_log(self, side, price):
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        f = open('log.txt', 'a')
+        txt = str(current_time) + ' ' + str(self.strategy) + ' ' + str(side) + ' at ' + str(price)
+        f.write(txt)
+        f.close()
 
     def start(self):
         while True:
