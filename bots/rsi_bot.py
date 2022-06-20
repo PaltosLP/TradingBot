@@ -38,7 +38,9 @@ class Bot:
                 time_err = False
             except:
                 print('something wrong with Timeout')
-                sleep(self.sleep_time) 
+                sleep(300)
+                client = Client(config.apiKey, config.apiSecurity)
+                sleep(self.sleep_time)
 
         df = df.iloc[:,:6]
         df.columns = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume']
