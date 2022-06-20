@@ -32,6 +32,7 @@ class Bot:
         utc_time = str(int(self.time_interval) * 60) + 'm UTC'
         interval = str(self.time_interval) + 'm'
         time_err = True
+        client = Client(config.apiKey, config.apiSecurity)
         while time_err == True:
             try:
                 df = pd.DataFrame(client.get_historical_klines(self.symbol, interval, utc_time))
@@ -39,6 +40,7 @@ class Bot:
             except:
                 print('something wrong with Timeout')
                 sleep(300)
+                client = None
                 client = Client(config.apiKey, config.apiSecurity)
                 sleep(self.sleep_time)
 
@@ -50,6 +52,7 @@ class Bot:
         return df
 
     def place_order(self, side):
+        client = Client(config.apiKey, config.apiSecurity)
         if side == 'BUY':
             buying = self.file_get('BUY')
             unrounded_qty = self.acc_data(self.stable_asset)
