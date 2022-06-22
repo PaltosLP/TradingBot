@@ -3,7 +3,7 @@ import pandas as pd
 import ta 
 from time import sleep
 from termcolor import colored
-from datetime import datetime
+import datetime
 import config
 
 
@@ -56,13 +56,15 @@ class Bot:
             buying = self.file_get('BUY')
             unrounded_qty = self.acc_data(self.stable_asset)
             unrounded_qty = float(unrounded_qty) - 0.01 * float(unrounded_qty)
-            qty = int(round(unrounded_qty, 0)) / buying
+            unrounded_qty = unrounded_qty / buying
+            qty = int(round(unrounded_qty, 0))
 
         else:
             selling = self.file_get('SELL')
             unrounded_qty = self.acc_data(self.buying_asset)
             unrounded_qty = float(unrounded_qty)  - 0.01 * float(unrounded_qty)
-            qty = int(round(unrounded_qty, 0)) / selling
+            unrounded_qty = unrounded_qty / selling
+            qty = int(round(unrounded_qty, 0))
 
         qty_err = True
         while qty_err == True:
@@ -168,10 +170,11 @@ class Bot:
             return sell_sig
 
     def file_log(self, side, price):
-        now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
+        # now = datetime.now()
+        # current_time = now.strftime("%H:%M:%S")
+        current_time = datetime.datetime.now()
         f = open('log.txt', 'a')
-        txt = str(current_time) + ' ' + str(self.strategy) + ' ' + str(side) + ' at ' + str(price)
+        txt = str(current_time) + ' ' + str(self.strategy) + ' ' + str(side) + ' at ' + str(price) + '\n'
         f.write(txt)
         f.close()
 
