@@ -1,5 +1,5 @@
 Buying:
-3
+2
 
 Selling:
-0
+1
