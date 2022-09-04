@@ -100,7 +100,10 @@ times = [
 
         ]
 
+f = open("info.txt", 'w')
 for x in times: 
-    print(datetime.datetime.fromtimestamp(x/1000))
+    y = datetime.datetime.fromtimestamp(x/1000)
+    f.write(f"{y}\n")
+f.close()
 
 
