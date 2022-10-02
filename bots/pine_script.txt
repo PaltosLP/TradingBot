@@ -1,0 +1,23 @@
+
+
+
+//@version=5
+strategy("MACD Strategy", overlay=true)
+fastLength = 12
+slowlength = 26
+MACDLength = 9
+MACD = ta.ema(close, fastLength) - ta.ema(close, slowlength)
+Signal_MACD = ta.ema(MACD, MACDLength)
+delta = MACD - Signal_MACD
+
+old_MACD = ta.ema(close[2], fastLength) - ta.ema(close[2], slowlength)
+old_Signal_Macd = ta.ema(old_MACD, MACDLength)
+old_delta = old_MACD - old_Signal_Macd
+
+
+if (ta.crossover(delta, 0))
+	strategy.entry("MacdLE", strategy.long, comment="BUY")
+
+
+if (ta.crossunder(delta, old_delta))
+	strategy.entry("MacdSE", strategy.short, comment="SELL")
