@@ -21,3 +21,23 @@ if (ta.crossover(delta, 0))
 
 if (ta.crossunder(delta, old_delta))
 	strategy.entry("MacdSE", strategy.short, comment="SELL")
+
+
+
+------------------------------------------------------------------------------
+
+
+//@version=5
+strategy("RSI Strategy", overlay=true)
+length = 14
+overSold = 32
+overBought = 60
+
+rsi = ta.rsi(close, length)
+
+
+if (ta.crossover(rsi, overSold))
+	strategy.entry("RsiLE", strategy.long, comment="BUY")
+
+if (ta.crossunder(rsi, overBought))
+	strategy.entry("RsiSE", strategy.short, comment="SELL")
