@@ -157,8 +157,6 @@ class Bot:
         
     def check_rsi_open(self, df):
         buy_sig = False
-        # print(ta.trend.macd_diff(df.Close))
-        # print(ta.trend.macd_diff(df.Close).iloc[-1])
         if ta.momentum.rsi(df.Close).iloc[-1] < 32:
             buy_sig = True
             return buy_sig
