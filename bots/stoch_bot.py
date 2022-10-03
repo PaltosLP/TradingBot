@@ -156,9 +156,7 @@ class Bot:
         
     def check_stoch_open(self, df):
         buy_sig = False
-        # print(ta.trend.macd_diff(df.Close))
-        # print(ta.trend.macd_diff(df.Close).iloc[-1])
-
+        
         stoch = ta.momentum.stoch(high = df.High ,low = df.Low, close = df.Close).iloc[-1]
         stoch_sig = ta.momentum.stoch_signal(high = df.High ,low = df.Low, close = df.Close).iloc[-1]
         if stoch < 20 and stoch_sig < 20:
