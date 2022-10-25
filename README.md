@@ -5,7 +5,7 @@ The results of my project showed, if you'd use one of those algorithms you shoul
 
 
 | Strategy |	MACD	| RSI | STOCH |
-|-----------------------------------|
+|------------------------|
 |  Netprofit [USD]	| 2.96 |	3.9 |	-1.66 |
 |--------------------|------|------|--------|
 | Netprofit [%]	| 5.92	| 7.8 |	-3.31 |
