@@ -1,4 +1,4 @@
-# Trading_Bot.py
+# TradingBot
 I wrote this code as a part of a school project. I wouldn't recommend using it for trading, because these are pretty basic indicators.
 The results of my project showed, if you'd use one of those algorithms you should use the RSI.
 
