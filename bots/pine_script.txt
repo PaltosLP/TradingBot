@@ -1,6 +1,4 @@
 
-
-
 //@version=5
 strategy("MACD Strategy", overlay=true)
 fastLength = 12
@@ -20,24 +18,43 @@ if (ta.crossover(delta, 0))
 
 
 if (ta.crossunder(delta, old_delta))
-	strategy.entry("MacdSE", strategy.short, comment="SELL")
+	strategy.close("MacdLE",  comment="SELL")
 
+----------------------------------------------------------------------
 
-
-------------------------------------------------------------------------------
 
 
 //@version=5
-strategy("RSI Strategy", overlay=true)
-length = 14
-overSold = 32
-overBought = 60
+strategy("RSI Strategy", overlay=true) 
+
+length = 14 
+overSold = 32 
+overBought = 60 
 
 rsi = ta.rsi(close, length)
 
+if (ta.crossover(rsi, overSold)) 
+	strategy.entry("RsiLE", strategy.long, comment="BUY") 
 
-if (ta.crossover(rsi, overSold))
-	strategy.entry("RsiLE", strategy.long, comment="BUY")
 
-if (ta.crossunder(rsi, overBought))
-	strategy.entry("RsiSE", strategy.short, comment="SELL")
+if (ta.crossunder(rsi, overBought)) 
+	strategy.close("RsiLE", comment="SELL")
+
+---------------------------------------------------------------------
+
+//@version=5 
+strategy("StochasticOscillator Strategy", overlay=true)
+length = 14
+sma_length = 3
+
+//K = (close - ta.lowest(close, length)) / (ta.highest(close, length) - ta.lowest(close, length)) * 100
+K = ta.stoch(close, ta.highest(close, length), ta.lowest(close, length), length)
+D = ta.sma(K, sma_length)
+
+if (D < K and K < 20)
+	strategy.entry("strat", strategy.long, comment="BUY")
+	
+if (D > K and K > 80)
+	strategy.close("strat",  comment="SELL")
+
+
